@@ -52,19 +52,29 @@ A continuación, se muestra el modelo relacional de la base de datos de un viver
 El modelo relacional se ha realizado en MySQL Workbench y se ha exportado a un archivo .sql. A continuación, se muestra el modelo relacional de la base de datos de un vivero.
 
 ```sql
+
+-- Crear un tipo enumerado para los posibles puestos de empleados
+CREATE TYPE puesto_enum AS ENUM (
+  'Gerente',
+  'Supervisor',
+  'Operario',
+  'Jardinero',
+  'Vendedor'
+);
+
 CREATE TABLE viveros (
   id_vivero SERIAL PRIMARY KEY,
-  latitud DECIMAL(9,6),
-  longitud DECIMAL(9,6),
+  latitud DECIMAL(9,6) NOT NULL CHECK (latitud >= -90 AND latitud <= 90),  -- Latitud válida
+  longitud DECIMAL(9,6) NOT NULL CHECK (longitud >= -180 AND longitud <= 180),  -- Longitud válida
   nombre VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE zona (
   id_zona SERIAL,
   id_vivero INT,
-  nombre VARCHAR(100),
-  latitud DECIMAL(9,6),
-  longitud DECIMAL(9,6),
+  nombre VARCHAR(100) NOT NULL,
+  latitud DECIMAL(9,6) NOT NULL CHECK (latitud >= -90 AND latitud <= 90),  -- Latitud válida
+  longitud DECIMAL(9,6) NOT NULL CHECK (longitud >= -180 AND longitud <= 180),  -- Longitud válida
   PRIMARY KEY (id_zona, id_vivero),
   FOREIGN KEY (id_vivero) REFERENCES viveros(id_vivero) ON DELETE CASCADE
 );
@@ -78,31 +88,33 @@ CREATE TABLE producto (
 
 CREATE TABLE empleado (
   id_empleado SERIAL PRIMARY KEY,
-  nombre VARCHAR(100),
-  apellido1 VARCHAR(100),
+  nombre VARCHAR(100) NOT NULL,
+  apellido1 VARCHAR(100) NOT NULL,
   apellido2 VARCHAR(100),
-  salario DECIMAL(10,2) CHECK(salario > 0)
+  salario DECIMAL(10,2) CHECK(salario > 0),
+  puesto puesto_enum NOT NULL  -- Columna que utiliza el tipo enumerado puesto_enum
 );
 
 CREATE TABLE telefono_empleados (
   id_empleado INT,
-  telefono VARCHAR(15) PRIMARY KEY,
+  telefono VARCHAR(9) CHECK(LENGTH(telefono) = 9) PRIMARY KEY,
   FOREIGN KEY (id_empleado) REFERENCES empleado(id_empleado) ON DELETE CASCADE
 );
 
 CREATE TABLE clientes_plus (
   dni VARCHAR(9) PRIMARY KEY,
-  nombre VARCHAR(100),
-  apellido1 VARCHAR(100),
+  nombre VARCHAR(100) NOT NULL,
+  apellido1 VARCHAR(100) NOT NULL,
   apellido2 VARCHAR(100),
-  fecha_alta DATE,
-  volumen_compras_mensual DECIMAL(10,2),
-  bonificacion DECIMAL(5,2)
+  fecha_alta DATE NOT NULL CHECK(fecha_alta <= CURRENT_DATE),
+  volumen_compras_mensual DECIMAL(10,2) CHECK(volumen_compras_mensual >= 0),
+  bonificacion DECIMAL(5,2) CHECK(bonificacion >= 0)
+  CONSTRAINT dni_valido CHECK (dni ~ '^[0-9]{8}[A-Z]$')
 );
 
 CREATE TABLE telefono_cliente (
   dni VARCHAR(9),
-  telefono VARCHAR(15) PRIMARY KEY,
+  telefono VARCHAR(9) CHECK(LENGTH(telefono) = 9) PRIMARY KEY,
   FOREIGN KEY (dni) REFERENCES clientes_plus(dni) ON DELETE CASCADE
 );
 
@@ -118,22 +130,24 @@ CREATE TABLE pedido (
 
 CREATE TABLE zona_producto (
   id_zona INT,
+  id_vivero INT,
   id_producto INT,
   cantidad INT CHECK(cantidad >= 0),
-  PRIMARY KEY (id_zona, id_producto),
-  FOREIGN KEY (id_zona) REFERENCES zona(id_zona, id_vivero) ON DELETE CASCADE,
+  PRIMARY KEY (id_zona, id_vivero, id_producto),
+  FOREIGN KEY (id_zona, id_vivero) REFERENCES zona(id_zona, id_vivero) ON DELETE CASCADE,
   FOREIGN KEY (id_producto) REFERENCES producto(id_producto) ON DELETE CASCADE
 );
 
 CREATE TABLE zona_empleado (
   id_trabajo SERIAL PRIMARY KEY,
   id_zona INT,
+  id_vivero INT,
   id_producto INT,
   productividad DECIMAL(5,2) CHECK(productividad >= 0),
-  puesto VARCHAR(100),
-  fecha_inicial DATE,
-  fecha_final DATE,
-  FOREIGN KEY (id_zona) REFERENCES zona(id_zona, id_vivero) ON DELETE CASCADE,
+  puesto puesto_enum NOT NULL,  -- Usando el enumerado para especificar el puesto en la tabla zona_empleado
+  fecha_inicial DATE NOT NULL,
+  fecha_final DATE CHECK ((fecha_final >= fecha_inicial) AND (fecha_final <= CURRENT_DATE)),
+  FOREIGN KEY (id_zona, id_vivero) REFERENCES zona(id_zona, id_vivero) ON DELETE CASCADE,
   FOREIGN KEY (id_producto) REFERENCES producto(id_producto) ON DELETE CASCADE
 );
 ```
