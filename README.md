@@ -189,7 +189,7 @@ CREATE TABLE zona_empleado (
 ![select vivero](./images/ZEMPLEADO.png)
 
 ### 4.10 SELECT de la tabla zona_productos
-
+ 
 ![select vivero](./images/image.png)
 
 ## 5. Conclusiones
