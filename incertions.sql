@@ -14,11 +14,11 @@ DELETE FROM viveros;
 
 INSERT INTO viveros 
 VALUES 
-(0, 28.4694, -16.2546, 'Vivero de La Laguna'),
-(1, 28.6023, -16.7093, 'Vivero de Santa Cruz de Tenerife'),
-(2, 28.1235, -15.4363, 'Vivero de Las Palmas de Gran Canaria'),
-(3, 28.9260, -13.6518, 'Vivero de Arrecife'),
-(4, 28.1486, -17.2473, 'Vivero de Los Llanos de Aridane');
+('V0001', 28.4694, -16.2546, 'Vivero de La Laguna'),
+('V0002', 28.6023, -16.7093, 'Vivero de Santa Cruz de Tenerife'),
+('V0003', 28.1235, -15.4363, 'Vivero de Las Palmas de Gran Canaria'),
+('V0004', 28.9260, -13.6518, 'Vivero de Arrecife'),
+('V0005', 28.1486, -17.2473, 'Vivero de Los Llanos de Aridane');
 
 SELECT * FROM viveros;
 
@@ -27,16 +27,16 @@ DELETE FROM zona;
 
 INSERT INTO zona
 VALUES 
-(0, 0, 'Zona Norte La Laguna', 28.4745, -16.3208),
-(1, 0, 'Zona Centro La Laguna', 28.4636, -16.2549),
-(2, 1, 'Zona Sur Santa Cruz', 28.5874, -16.7029),
-(3, 1, 'Zona Este Santa Cruz', 28.6105, -16.7143),
-(4, 2, 'Zona Centro Las Palmas', 28.1277, -15.4310),
-(5, 2, 'Zona Sur Las PalmAND as', 28.0978, -15.4319),
-(6, 3, 'Zona Norte Arrecife', 28.9294, -13.6613),
-(7, 3, 'Zona Centro Arrecife', 28.9232, -13.6501),
-(8, 4, 'Zona Oeste Los Llanos', 28.1498, -17.2547),
-(9, 4, 'Zona Este Los Llanos', 28.1436, -17.2415);
+('Z0001', 'V0001', 'Zona Norte La Laguna', 28.4745, -16.3208),
+('Z0002', 'V0001', 'Zona Centro La Laguna', 28.4636, -16.2549),
+('Z0003', 'V0002', 'Zona Sur Santa Cruz', 28.5874, -16.7029),
+('Z0004', 'V0002', 'Zona Este Santa Cruz', 28.6105, -16.7143),
+('Z0005', 'V0003', 'Zona Centro Las Palmas', 28.1277, -15.4310),
+('Z0006', 'V0003', 'Zona Sur Las Palmas', 28.0978, -15.4319),
+('Z0007', 'V0004', 'Zona Norte Arrecife', 28.9294, -13.6613),
+('Z0008', 'V0004', 'Zona Centro Arrecife', 28.9232, -13.6501),
+('Z0009', 'V0005', 'Zona Oeste Los Llanos', 28.1498, -17.2547),
+('Z0010', 'V0005', 'Zona Este Los Llanos', 28.1436, -17.2415);
 
 SELECT * FROM zona;
 
@@ -46,11 +46,11 @@ DELETE FROM producto;
 
 INSERT INTO producto
 VALUES
-(0, 100, 5.00, 'Maceta de barro'),
-(1, 50, 10.00, 'Maceta de plástico'),
-(2, 200, 2.00, 'Semillas de tomate'),
-(3, 150, 3.00, 'Semillas de lechuga'),
-(4, 300, 1.00, 'Semillas de perejil');
+('P0001', 100, 5.00, 'Maceta de barro'),
+('P0002', 50, 10.00, 'Maceta de plástico'),
+('P0003', 200, 2.00, 'Semillas de tomate'),
+('P0004', 150, 3.00, 'Semillas de lechuga'),
+('P0005', 300, 1.00, 'Semillas de perejil');
 
 SELECT * FROM producto;
 
@@ -59,11 +59,11 @@ DELETE FROM empleado;
 
 INSERT INTO empleado
 VALUES
-(0, 'Javier', 'Almenara', 'Herrera', 1500.00, 'Gerente'),
-(1, 'Pablo', 'Rodríguez', 'Rosa', 1200.00, 'Supervisor'),
-(2, 'María', 'García', 'Pérez', 1000.00, 'Operario'),
-(3, 'Carlos', 'González', 'Martín', 900.00, 'Jardinero'),
-(4, 'Ana', 'Hernández', 'Gómez', 800.00, 'Vendedor');
+('E0001', 'Javier', 'Almenara', 'Herrera', 1500.00, 'Gerente'),
+('E0002', 'Pablo', 'Rodríguez', 'Rosa', 1200.00, 'Supervisor'),
+('E0003', 'María', 'García', 'Pérez', 1000.00, 'Operario'),
+('E0004', 'Carlos', 'González', 'Martín', 900.00, 'Jardinero'),
+('E0005', 'Ana', 'Hernández', 'Gómez', 800.00, 'Vendedor');
 
 SELECT * FROM empleado;
 
@@ -72,14 +72,14 @@ DELETE FROM telefono_empleados;
 
 INSERT INTO telefono_empleados
 VALUES
-(0, '922123456'),
-(0, '922654321'),
-(1, '922987654'),
-(1, '922456789'),
-(2, '922987123'),
-(3, '928123456'),
-(4, '922654381'),
-(4, '928987654');
+('E0001', '922123456'),
+('E0001', '922654321'),
+('E0002', '922987654'),
+('E0002', '922456789'),
+('E0003', '922987123'),
+('E0004', '928123456'),
+('E0005', '922654381'),
+('E0005', '928987654');
 
 SELECT * FROM telefono_empleados;
 
@@ -116,16 +116,16 @@ DELETE FROM pedido;
 
 INSERT INTO pedido
 VALUES
-(0, 0, '25-MAR-2022', 19.99, '78424892F'),
-(1, 1, '29-FEB-2024', 29.99, '51236985X'),
-(2, 2, '25-MAR-2023', 19.99, '89345678Y'),
-(3, 3, '29-FEB-2024', 9.99, '42187965Z'),
-(4, 4, '25-MAR-2024', 29.99, '36587412T');
+('PE00000001', 'E0001', '25-MAR-2022', 19.99, '78424892F'),
+('PE00000002', 'E0002', '29-FEB-2024', 29.99, '51236985X'),
+('PE00000003', 'E0003', '25-MAR-2023', 19.99, '89345678Y'),
+('PE00000004', 'E0004', '29-FEB-2024', 9.99, '42187965Z'),
+('PE00000005', 'E0005', '25-MAR-2024', 29.99, '36587412T');
 
 INSERT INTO pedido
 VALUES
-(6, 3, '25-MAR-2024', 29.99),
-(5, 2, '29-FEB-2024', 9.99);
+('PE00000006', 'E0003', '25-MAR-2024', 29.99),
+('PE00000007', 'E0006', '29-FEB-2024', 9.99);
 
 SELECT * FROM pedido;
 
@@ -134,14 +134,14 @@ DELETE FROM zona_empleado;
 
 INSERT INTO zona_empleado
 VALUES
-(0, 0, 0, 0, 0.0, 'Gerente', '17-JAN-2022'),
-(1, 0, 0, 1, 0.0, 'Supervisor', '16-FEB-2022'),
-(2, 0, 0, 2, 0.0, 'Operario', '17-JAN-2022');
+(0, 'Z0001', 'V0001', 'P0001', 0.0, 'Gerente', '17-JAN-2022'),
+(1, 'Z0001', 'V0001', 'P0002', 0.0, 'Supervisor', '16-FEB-2022'),
+(2, 'Z0001', 'V0001', 'P0003', 0.0, 'Operario', '17-JAN-2022');
 
 INSERT INTO zona_empleado
 VALUES
-(3, 0, 0, 3, 0.0, 'Jardinero', '17-JAN-2022', '12-DEC-2023'),
-(4, 0, 0, 4, 0.0, 'Vendedor', '17-JAN-2022', '12-DEC-2023');
+(3, 'Z0001', 'V0001', 'P0004', 0.0, 'Jardinero', '17-JAN-2022', '12-DEC-2023'),
+(4, 'Z0001', 'V0001', 'P0005', 0.0, 'Vendedor', '17-JAN-2022', '12-DEC-2023');
 
 SELECT * FROM zona_empleado;
 
@@ -150,16 +150,16 @@ DELETE FROM zona_producto;
 
 INSERT INTO zona_producto
 VALUES
-(0, 0, 0, 10),
-(1, 0, 1, 20),
-(2, 1, 2, 45),
-(3, 1, 3, 30),
-(4, 2, 2, 50),
-(5, 2, 3, 25),
-(6, 3, 1, 15),
-(7, 3, 2, 10),
-(8, 4, 1, 30),
-(9, 4, 4, 20);
+('Z0001', 'V0001', 'P0001', 10),
+('Z0002', 'V0001', 'P0002', 20),
+('Z0003', 'V0002', 'P0003', 45),
+('Z0004', 'V0002', 'P0004', 30),
+('Z0005', 'V0003', 'P0004', 50),
+('Z0006', 'V0003', 'P0003', 25),
+('Z0007', 'V0004', 'P0003', 15),
+('Z0008', 'V0004', 'P0003', 10),
+('Z0009', 'V0005', 'P0002', 30),
+('Z0010', 'V0005', 'P0005', 20);
 
 
 SELECT * FROM zona_producto;

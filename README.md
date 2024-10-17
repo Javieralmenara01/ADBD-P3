@@ -63,15 +63,16 @@ CREATE TYPE puesto_enum AS ENUM (
 );
 
 CREATE TABLE viveros (
-  id_vivero SERIAL PRIMARY KEY,
+  id_vivero VARCHAR(5) PRIMARY KEY,  -- Código de 5 dígitos
   latitud DECIMAL(9,6) NOT NULL CHECK (latitud >= -90 AND latitud <= 90),  -- Latitud válida
   longitud DECIMAL(9,6) NOT NULL CHECK (longitud >= -180 AND longitud <= 180),  -- Longitud válida
   nombre VARCHAR(100) NOT NULL
+  CONSTRAINT id_vivero_valido CHECK (id_vivero ~ '^V[0-9]{4}$')  -- Código de 5 dígitos
 );
 
 CREATE TABLE zona (
-  id_zona SERIAL,
-  id_vivero INT,
+  id_zona VARCHAR(5) CHECK (id_zona ~ '^Z[0-9]{4}$'),  -- Código de 5 dígitos
+  id_vivero VARCHAR(5) CHECK (id_vivero ~ '^V[0-9]{4}$'),  -- Código de 5 dígitos
   nombre VARCHAR(100) NOT NULL,
   latitud DECIMAL(9,6) NOT NULL CHECK (latitud >= -90 AND latitud <= 90),  -- Latitud válida
   longitud DECIMAL(9,6) NOT NULL CHECK (longitud >= -180 AND longitud <= 180),  -- Longitud válida
@@ -80,14 +81,15 @@ CREATE TABLE zona (
 );
 
 CREATE TABLE producto (
-  id_producto SERIAL PRIMARY KEY,
+  id_producto VARCHAR(5) PRIMARY KEY CHECK (id_producto ~ '^P[0-9]{4}$'),  -- Código de 5 dígitos
   cantidad INT CHECK(cantidad >= 0),
   precio DECIMAL(10,2) CHECK(precio > 0),
   nombre VARCHAR(100) NOT NULL
+
 );
 
 CREATE TABLE empleado (
-  id_empleado SERIAL PRIMARY KEY,
+  id_empleado VARCHAR(5) PRIMARY KEY CHECK (id_empleado ~ '^E[0-9]{4}$'),  -- Código de 5 dígitos
   nombre VARCHAR(100) NOT NULL,
   apellido1 VARCHAR(100) NOT NULL,
   apellido2 VARCHAR(100),
@@ -96,7 +98,7 @@ CREATE TABLE empleado (
 );
 
 CREATE TABLE telefono_empleados (
-  id_empleado INT,
+  id_empleado VARCHAR(5) CHECK (id_empleado ~ '^E[0-9]{4}$'),
   telefono VARCHAR(9) CHECK(LENGTH(telefono) = 9) PRIMARY KEY,
   FOREIGN KEY (id_empleado) REFERENCES empleado(id_empleado) ON DELETE CASCADE
 );
@@ -113,25 +115,25 @@ CREATE TABLE clientes_plus (
 );
 
 CREATE TABLE telefono_cliente (
-  dni VARCHAR(9),
+  dni VARCHAR(9) CHECK (dni ~ '^[0-9]{8}[A-Z]$'),
   telefono VARCHAR(9) CHECK(LENGTH(telefono) = 9) PRIMARY KEY,
   FOREIGN KEY (dni) REFERENCES clientes_plus(dni) ON DELETE CASCADE
 );
 
 CREATE TABLE pedido (
-  codigo SERIAL PRIMARY KEY,
-  id_empleado INT,
+  codigo VARCHAR(10) PRIMARY KEY CHECK (codigo ~ '^PE[0-9]{8}$'),
+  id_empleado VARCHAR(5) CHECK (id_empleado ~ '^E[0-9]{4}$'),
   fecha_realizacion DATE,
   precio_total DECIMAL(10,2),
-  dni VARCHAR(9),
+  dni VARCHAR(9) CHECK (dni ~ '^[0-9]{8}[A-Z]$'),
   FOREIGN KEY (id_empleado) REFERENCES empleado(id_empleado) ON DELETE CASCADE,
   FOREIGN KEY (dni) REFERENCES clientes_plus(dni) ON DELETE CASCADE
 );
 
 CREATE TABLE zona_producto (
-  id_zona INT,
-  id_vivero INT,
-  id_producto INT,
+  id_zona VARCHAR(5) CHECK (id_zona ~ '^Z[0-9]{4}$'),
+  id_vivero VARCHAR(5) CHECK (id_vivero ~ '^V[0-9]{4}$'),
+  id_producto VARCHAR(5) CHECK (id_producto ~ '^P[0-9]{4}$'),
   cantidad INT CHECK(cantidad >= 0),
   PRIMARY KEY (id_zona, id_vivero, id_producto),
   FOREIGN KEY (id_zona, id_vivero) REFERENCES zona(id_zona, id_vivero) ON DELETE CASCADE,
@@ -140,9 +142,9 @@ CREATE TABLE zona_producto (
 
 CREATE TABLE zona_empleado (
   id_trabajo SERIAL PRIMARY KEY,
-  id_zona INT,
-  id_vivero INT,
-  id_producto INT,
+  id_zona VARCHAR(5) CHECK (id_zona ~ '^Z[0-9]{4}$'),
+  id_vivero VARCHAR(5) CHECK (id_vivero ~ '^V[0-9]{4}$'),
+  id_producto VARCHAR(5) CHECK (id_producto ~ '^P[0-9]{4}$'),
   productividad DECIMAL(5,2) CHECK(productividad >= 0),
   puesto puesto_enum NOT NULL,  -- Usando el enumerado para especificar el puesto en la tabla zona_empleado
   fecha_inicial DATE NOT NULL,
@@ -156,13 +158,13 @@ CREATE TABLE zona_empleado (
 
 ### 4.1 SELECT de la tabla viveros
 
-![select vivero](./images/SELECT%20VIVEROS.png)
+![select vivero](./images/VIVERO.png)
 ### 4.2 SELECT de la tabla zona
 
-![select vivero](./images/SELECT%20ZONA.png)
+![select vivero](./images/ZONA.png)
 ### 4.3 SELECT de la tabla producto
 
-![select vivero](./images/SELECT%20PRODUCTO.png)
+![select vivero](./images/PRODUCTO.png)
 ### 4.4 SELECT de la tabla empleado
 
 ![select vivero](./images/EMPLEADO.png)
@@ -182,11 +184,11 @@ CREATE TABLE zona_empleado (
 
 ![select vivero](./images/PEDIDO.png)
 
-### 4.9 SELECT de la tabla zona_producto
+### 4.9 SELECT de la tabla zona_empleado
 
-![select vivero](./images/SELECT%20VIVEROS.png)
+![select vivero](./images/ZEMPLEADO.png)
 
-### 4.10 SELECT de la tabla zona_empleados
+### 4.10 SELECT de la tabla zona_productos
 
 ![select vivero](./images/image.png)
 
