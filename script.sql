@@ -63,7 +63,7 @@ CREATE TABLE empleado (
 
 CREATE TABLE telefono_empleados (
   id_empleado INT,
-  telefono VARCHAR(15) PRIMARY KEY,
+  telefono VARCHAR(9) CHECK(LENGTH(telefono) = 9) PRIMARY KEY,
   FOREIGN KEY (id_empleado) REFERENCES empleado(id_empleado) ON DELETE CASCADE
 );
 
@@ -72,14 +72,15 @@ CREATE TABLE clientes_plus (
   nombre VARCHAR(100) NOT NULL,
   apellido1 VARCHAR(100) NOT NULL,
   apellido2 VARCHAR(100),
-  fecha_alta DATE,
-  volumen_compras_mensual DECIMAL(10,2),
-  bonificacion DECIMAL(5,2)
+  fecha_alta DATE NOT NULL CHECK(fecha_alta <= CURRENT_DATE),
+  volumen_compras_mensual DECIMAL(10,2) CHECK(volumen_compras_mensual >= 0),
+  bonificacion DECIMAL(5,2) CHECK(bonificacion >= 0)
+  CONSTRAINT dni_valido CHECK (dni ~ '^[0-9]{8}[A-Z]$')
 );
 
 CREATE TABLE telefono_cliente (
   dni VARCHAR(9),
-  telefono VARCHAR(15) PRIMARY KEY,
+  telefono VARCHAR(9) CHECK(LENGTH(telefono) = 9) PRIMARY KEY,
   FOREIGN KEY (dni) REFERENCES clientes_plus(dni) ON DELETE CASCADE
 );
 
@@ -110,8 +111,8 @@ CREATE TABLE zona_empleado (
   id_producto INT,
   productividad DECIMAL(5,2) CHECK(productividad >= 0),
   puesto puesto_enum NOT NULL,  -- Usando el enumerado para especificar el puesto en la tabla zona_empleado
-  fecha_inicial DATE,
-  fecha_final DATE,
+  fecha_inicial DATE NOT NULL,
+  fecha_final DATE CHECK ((fecha_final >= fecha_inicial) AND (fecha_final <= CURRENT_DATE)),
   FOREIGN KEY (id_zona, id_vivero) REFERENCES zona(id_zona, id_vivero) ON DELETE CASCADE,
   FOREIGN KEY (id_producto) REFERENCES producto(id_producto) ON DELETE CASCADE
 );
