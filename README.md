@@ -152,8 +152,46 @@ CREATE TABLE zona_empleado (
 );
 ```
 
-## 4. Conclusiones
+## 4. Resultados tras las inserciones en cada una de las tablas
+
+### 4.1 SELECT de la tabla viveros
+
+![select vivero](./images/SELECT%20VIVEROS.png)
+### 4.2 SELECT de la tabla zona
+
+![select vivero](./images/SELECT%20ZONA.png)
+### 4.3 SELECT de la tabla producto
+
+![select vivero](./images/SELECT%20PRODUCTO.png)
+### 4.4 SELECT de la tabla empleado
+
+![select vivero](./images/EMPLEADO.png)
+
+### 4.5 SELECT de la tabla telefono_empleados
+
+![select vivero](./images/TEMPLEADO.png)
+
+### 4.6 SELECT de la tabla clientes_plus
+![select vivero](./images/CLIENT.png)
+
+### 4.7 SELECT de la tabla telefono_clientes
+
+![select vivero](./images/tclient.png)
+
+### 4.8 SELECT de la tabla pedido
+
+![select vivero](./images/PEDIDO.png)
+
+### 4.9 SELECT de la tabla zona_producto
+
+![select vivero](./images/SELECT%20VIVEROS.png)
+
+### 4.10 SELECT de la tabla zona_empleados
+
+![select vivero](./images/image.png)
+
+## 5. Conclusiones
 En esta práctica se ha realizado el modelo relacional de la base de datos de un vivero. Para ello, se han seguido las indicaciones del enunciado y se han creado las tablas necesarias para almacenar la información de los productos, los clientes, los empleados, los pedidos, los viveros y las zonas. Además, se ha exportado el modelo relacional a un archivo .sql para poder ejecutarlo en PostgreSQL.
 
-## 5. Bibliografía
+## 6. Bibliografía
 - Universidad de La Laguna (2024). *Práctica #03. Modelo Relacional Viveros*. [Enlace](https://docs.google.com/document/d/1a-C_griQTXsbsi3FKcWMJlCHEsr1gzfoeN5IiVD2hpc/edit#heading=h.gjdgxs)

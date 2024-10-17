@@ -110,13 +110,22 @@ VALUES
 ('42187965Z', '928123456'),
 ('36587412T', '922654381'),
 ('36587412T', '928987654');
-INSERT INTO zona_producto
+
+-- Inserciones de datos en la tabla de pedidos
+DELETE FROM pedido;
+
+INSERT INTO pedido
 VALUES
-(3, 0, 0, 3, 150, 3.00, 'Semillas de lechuga'),
-(4, 0, 0, 4, 300, 1.00, 'Semillas de perejil');
+(0, 0, '25-MAR-2022', 19.99, '78424892F'),
+(1, 1, '29-FEB-2024', 29.99, '51236985X'),
+(2, 2, '25-MAR-2023', 19.99, '89345678Y'),
+(3, 3, '29-FEB-2024', 9.99, '42187965Z'),
+(4, 4, '25-MAR-2024', 29.99, '36587412T');
+
+INSERT INTO pedido
 VALUES
-(3, 3, '25-MAR-2024', 29.99),
-(4, 4, '29-FEB-2024', 9.99);
+(6, 3, '25-MAR-2024', 29.99),
+(5, 2, '29-FEB-2024', 9.99);
 
 SELECT * FROM pedido;
 
