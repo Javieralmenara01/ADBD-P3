@@ -1,16 +1,46 @@
+-- Universidad de La Laguna
+-- Asignatura: ADBD
+-- Práctica 3: Modelo Relacional. Viveros
+-- Fecha: 17/10/2024
+
+-- Autores: 
+---  Javier Almenara Herrera 
+---  Pablo Rodríguez de la Rosa
+
+DROP TABLE IF EXISTS zona_empleado;
+DROP TABLE IF EXISTS zona_producto;
+DROP TABLE IF EXISTS pedido;
+DROP TABLE IF EXISTS telefono_cliente;
+DROP TABLE IF EXISTS clientes_plus;
+DROP TABLE IF EXISTS telefono_empleados;
+DROP TABLE IF EXISTS empleado;
+DROP TABLE IF EXISTS producto;
+DROP TABLE IF EXISTS zona;
+DROP TABLE IF EXISTS viveros;
+DROP TYPE IF EXISTS puesto_enum;
+
+-- Crear un tipo enumerado para los posibles puestos de empleados
+CREATE TYPE puesto_enum AS ENUM (
+  'Gerente',
+  'Supervisor',
+  'Operario',
+  'Jardinero',
+  'Vendedor'
+);
+
 CREATE TABLE viveros (
   id_vivero SERIAL PRIMARY KEY,
-  latitud DECIMAL(9,6),
-  longitud DECIMAL(9,6),
+  latitud DECIMAL(9,6) NOT NULL CHECK (latitud >= -90 AND latitud <= 90),  -- Latitud válida
+  longitud DECIMAL(9,6) NOT NULL CHECK (longitud >= -180 AND longitud <= 180),  -- Longitud válida
   nombre VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE zona (
   id_zona SERIAL,
   id_vivero INT,
-  nombre VARCHAR(100),
-  latitud DECIMAL(9,6),
-  longitud DECIMAL(9,6),
+  nombre VARCHAR(100) NOT NULL,
+  latitud DECIMAL(9,6) NOT NULL CHECK (latitud >= -90 AND latitud <= 90),  -- Latitud válida
+  longitud DECIMAL(9,6) NOT NULL CHECK (longitud >= -180 AND longitud <= 180),  -- Longitud válida
   PRIMARY KEY (id_zona, id_vivero),
   FOREIGN KEY (id_vivero) REFERENCES viveros(id_vivero) ON DELETE CASCADE
 );
@@ -24,10 +54,11 @@ CREATE TABLE producto (
 
 CREATE TABLE empleado (
   id_empleado SERIAL PRIMARY KEY,
-  nombre VARCHAR(100),
-  apellido1 VARCHAR(100),
+  nombre VARCHAR(100) NOT NULL,
+  apellido1 VARCHAR(100) NOT NULL,
   apellido2 VARCHAR(100),
-  salario DECIMAL(10,2) CHECK(salario > 0)
+  salario DECIMAL(10,2) CHECK(salario > 0),
+  puesto puesto_enum NOT NULL  -- Columna que utiliza el tipo enumerado puesto_enum
 );
 
 CREATE TABLE telefono_empleados (
@@ -38,8 +69,8 @@ CREATE TABLE telefono_empleados (
 
 CREATE TABLE clientes_plus (
   dni VARCHAR(9) PRIMARY KEY,
-  nombre VARCHAR(100),
-  apellido1 VARCHAR(100),
+  nombre VARCHAR(100) NOT NULL,
+  apellido1 VARCHAR(100) NOT NULL,
   apellido2 VARCHAR(100),
   fecha_alta DATE,
   volumen_compras_mensual DECIMAL(10,2),
@@ -64,21 +95,23 @@ CREATE TABLE pedido (
 
 CREATE TABLE zona_producto (
   id_zona INT,
+  id_vivero INT,
   id_producto INT,
   cantidad INT CHECK(cantidad >= 0),
-  PRIMARY KEY (id_zona, id_producto),
-  FOREIGN KEY (id_zona) REFERENCES zona(id_zona, id_vivero) ON DELETE CASCADE,
+  PRIMARY KEY (id_zona, id_vivero, id_producto),
+  FOREIGN KEY (id_zona, id_vivero) REFERENCES zona(id_zona, id_vivero) ON DELETE CASCADE,
   FOREIGN KEY (id_producto) REFERENCES producto(id_producto) ON DELETE CASCADE
 );
 
 CREATE TABLE zona_empleado (
   id_trabajo SERIAL PRIMARY KEY,
   id_zona INT,
+  id_vivero INT,
   id_producto INT,
   productividad DECIMAL(5,2) CHECK(productividad >= 0),
-  puesto VARCHAR(100),
+  puesto puesto_enum NOT NULL,  -- Usando el enumerado para especificar el puesto en la tabla zona_empleado
   fecha_inicial DATE,
   fecha_final DATE,
-  FOREIGN KEY (id_zona) REFERENCES zona(id_zona, id_vivero) ON DELETE CASCADE,
+  FOREIGN KEY (id_zona, id_vivero) REFERENCES zona(id_zona, id_vivero) ON DELETE CASCADE,
   FOREIGN KEY (id_producto) REFERENCES producto(id_producto) ON DELETE CASCADE
 );
